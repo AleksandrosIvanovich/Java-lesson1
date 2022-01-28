@@ -67,3 +67,24 @@ public abstract class Animal {
         this.swimDistance = swimDistance;
     }
 }
+
+package Lesson1;
+
+public interface CanJump {
+
+    double jump(int wall);
+
+}
+package Lesson1;
+
+public interface CanRun {
+
+    double run(int track);
+
+}
+package Lesson1;
+
+public interface CanSwim {
+
+    double swim(int pool);
+}
