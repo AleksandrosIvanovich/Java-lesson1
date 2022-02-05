@@ -1,0 +1,94 @@
+package Lesson2;
+
+public class CheckedException extends Throwable {
+    CheckedException(String message) {
+        super(message);
+    }
+}
+package Lesson2;
+
+public class Converter {
+    static int strConverter(String[][] strArray)
+            throws MyArraySizeException, MyArrayDataException {
+
+        int sum = 0;
+
+        if (4 != strArray.length) throw new MyArraySizeException();
+        for (int i = 0; i < strArray.length; i++) {
+            if (4 != strArray[i].length) throw new MyArraySizeException();
+            for (int k = 0; k < strArray[i].length; k++) {
+                try {
+                    sum += Integer.parseInt(strArray[i][k]);
+                } catch (NumberFormatException e) {
+                    throw new MyArrayDataException(i, k);
+                }
+            }
+        }
+
+        return sum;
+    }
+}
+package Lesson2;
+
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+        String[][] correctMatrix = {
+                {"1", "2", "3", "4"},
+                {"5", "6", "7", "8"},
+                {"8", "7", "6", "5"},
+                {"4", "3", "2", "1"}
+        };
+        String[][] wrongSizeMatrix = {
+                {"1", "2", "3", "4"},
+                {"5", "6", "7", "8"},
+                {"8", "7", "6", "5"},
+                {"4", "3"}
+        };
+        String[][] wrongCharMatrix = {
+                {"1", "2", "3", "4"},
+                {"5", "6", "7", "8"},
+                {"8", "7", "6", "5"},
+                {"4", "3", "X", "1"}
+        };
+
+        try {
+            System.out.println("Вариант 1:");
+            System.out.println("Сумма всех элементов массива равна " + Converter.strConverter(correctMatrix) + ".\n");
+        } catch (CheckedException e) {
+            e.getMessage();
+        }
+
+        try {
+            System.out.println("Вариант 2:");
+            System.out.println("Сумма всех элементов массива равна " + Converter.strConverter(wrongSizeMatrix) + ".\n");
+        } catch (CheckedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println("Вариант 3:");
+            System.out.println("Сумма всех элементов массива равна " + Converter.strConverter(wrongCharMatrix) + ".\n");
+        } catch (CheckedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+package Lesson2;
+
+public class MyArrayDataException extends CheckedException {
+
+    MyArrayDataException (int y, int x) {
+        super(String.format("Неверные данные в ячейке [%d, %d]\n", y, x));
+    }
+}
+package Lesson2;
+
+public class MyArraySizeException extends CheckedException {
+
+    MyArraySizeException() {
+        super("Неправильная размерность массива!");
+    }
+}
