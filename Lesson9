@@ -1,0 +1,442 @@
+import java.util.Arrays;
+import java.util.Scanner;
+public class Group implements Voenkomat {
+
+    private Student[] array = new Student[10];
+
+    public Group(Student[] array) {
+        this.array = array;
+    }
+
+    public Group() {
+        super();
+    }
+
+    public Student[] getArray() {
+        return array;
+    }
+
+    public void setArray(Student[] array) {
+        this.array = array;
+    }
+
+    public void setStudent(Student st, int index) throws GroupException, GroupExceptionTwo {
+        int indexTwo = 10;
+        try {
+            for (int i = 0; i < array.length; i++) {
+                if ((i == index) && (array[i] == null)) {
+                    array[i] = st;
+                    System.out.println("Место студента " + st + " в группе: " + (i + 1));
+                } else if ((i == index) && (array[i] != null)) {
+                    throw new GroupExceptionTwo();
+                } else if (indexTwo == index && (indexTwo++) == index) {
+                    throw new GroupException();
+                }
+            }
+        } catch (GroupExceptionTwo e) {
+            System.out.println(e.getMessage());
+        } catch (GroupException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteStudent(int index) throws DeleteStudentException {
+        try {
+            for (int i = 0; i < array.length; i++) {
+                if ((i == index) && (array[i] != null)) {
+                    array[i] = null;
+                    System.out.println("Студент с места: " + (i + 1) + " изгнан из группы");
+                } else if ((i == index) && (array[i] == null)) {
+                    throw new DeleteStudentException();
+                }
+            }
+        } catch (DeleteStudentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public int countStudentInGroup() {
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public String foundStudent(int index) {
+        String n = null;
+        for (int i = 0; i < array.length; i++) {
+            if ((array[i] != null) && (i == index)) {
+                n = array[i].getSurname();
+            }
+        }
+        return n;
+    }
+
+    @Override
+    public Student[] getVon() {
+        Student[] stu = new Student[10];
+        int j = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null && array[i].getAge() >= 18 && array[i].isSex() == true) {
+                stu[j] = array[i];
+                j++;
+            }
+        }
+        System.out.println(Arrays.toString(stu));
+        return stu;
+    }
+
+    public void sortStudentsByParametrs() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Выберите за каким параметром хотите отсортировать студентов (name, surname, surnameTwo, age, sex) ");
+        String n = sc.nextLine();
+
+        try {
+            if (n.equals("name")) {
+                for (int i = 0; i < array.length - 1; i++) {
+                    for (int j = i + 1; j < array.length; j++) {
+                        if (array[i] == null || array[j] == null) {
+                            continue;
+                        }
+                        if (array[i].getName().compareTo(array[j].getName()) > 0) {
+                            Student temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+            } else if (n.equals("surname")) {
+                for (int i = 0; i < array.length - 1; i++) {
+                    for (int j = i + 1; j < array.length; j++) {
+                        if (array[i] == null || array[j] == null) {
+                            continue;
+                        }
+                        if (array[i].getSurname().compareTo(array[j].getSurname()) > 0) {
+                            Student temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+            } else if (n.equals("surnameTwo")) {
+                for (int i = 0; i < array.length - 1; i++) {
+                    for (int j = i + 1; j < array.length; j++) {
+                        if (array[i] == null || array[j] == null) {
+                            continue;
+                        }
+                        if (array[i].getSurnameTwo().compareTo(array[j].getSurnameTwo()) > 0) {
+                            Student temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+            } else if (n.equals("age")) {
+                for (int i = 0; i < array.length - 1; i++) {
+                    for (int j = i + 1; j < array.length; j++) {
+                        if (array[i] == null || array[j] == null) {
+                            continue;
+                        }
+                        if (array[i].getAge() > array[j].getAge()) {
+                            Student temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+            } else if (n.equals("sex")) {
+                for (int i = 0; i < array.length - 1; i++) {
+                    for (int j = i + 1; j < array.length; j++) {
+                        if (array[i] == null || array[j] == null) {
+                            continue;
+                        }
+                        if (array[j].isSex() == true) {
+                            Student temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+            } else {
+                throw new NotCorrectParametrException();
+            }
+            System.out.println(Arrays.toString(array));
+
+        } catch (NotCorrectParametrException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setStudentOne(int index) throws GroupException, GroupExceptionTwo {
+        int indexTwo = 10;
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Введите name");
+            String name = sc.nextLine();
+            System.out.println("Введите surname");
+            String surname = sc.nextLine();
+            System.out.println("Введите surnameTwo");
+            String surnameTwo = sc.nextLine();
+            System.out.println("Введите age");
+            int age = sc.nextInt();
+            System.out.println("Введите sex");
+            boolean sex = sc.nextBoolean();
+
+            Student stud = new Student(name, surname, surnameTwo, age, sex);
+
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == null && i == index) {
+                    array[i] = stud;
+                    System.out.println("Студент: " + stud);
+                    System.out.println(Arrays.toString(array));
+                } else if (array[i] != null && i == index) {
+                    throw new GroupExceptionTwo();
+                } else if (array[i] == null || i == (indexTwo++) || i == indexTwo) {
+                    throw new GroupException();
+                }
+            }
+        } catch (GroupExceptionTwo e) {
+            System.out.println(e.getMessage());
+        } catch (GroupException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Вы ввели не корректные параметры");
+        }
+    }
+
+    @Override
+    public String toString() {
+        int j = 0;
+        String[] arraySurname = new String[countStudentInGroup()];
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                arraySurname[j] = array[i].getSurname();
+                j++;
+            }
+        }
+        Arrays.sort(arraySurname);
+        return "Group: " + Arrays.toString(arraySurname);
+    }
+
+}
+public class GroupException extends Exception {
+    
+    @Override
+    public String getMessage() {
+        return "В этой группе больше студентов не может быть!";
+    }
+    
+}
+public class GroupExceptionTwo extends Exception {
+    
+    @Override
+    public String getMessage() {
+        return "Это место в группе уже занято!";
+    }
+    
+}
+public class Human {
+    
+    private String name;
+    private String surname;
+    private String surnameTwo;
+    private int age;
+    private boolean sex;
+
+    public Human(String name, String surname, String surnameTwo, int age, boolean sex) {
+        this.name = name;
+        this.surname = surname;
+        this.surnameTwo = surnameTwo;
+        this.age = age;
+        this.sex = sex;
+    }
+    
+    public Human() {
+        super();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getSurnameTwo() {
+        return surnameTwo;
+    }
+
+    public void setSurnameTwo(String surnameTwo) {
+        this.surnameTwo = surnameTwo;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return "Student = " + name + ", " + surname + ", " + surnameTwo + ", " + age + ", " + sex;
+    }
+    
+}
+public class Main {
+    
+    public static void main(String[] args) throws GroupException, GroupExceptionTwo, DeleteStudentException, NotCorrectParametrException, Exception {
+        
+        Student one = new Student("Ivan", "Petrov", "Vasilievich", 18, true);
+        Student two = new Student("Anna", "Petrova", "Igorevna", 17, false);
+        Student three = new Student("Olia", "Vetrova", "Pavlovna", 21, false);
+        Student four = new Student("Igor", "Shvedenko", "Rostyslavovych", 19, true);
+        Student five = new Student("Roman", "Kryvobok", "Valerievich", 15, true);
+        Student six = new Student("Kostiantyn", "Khalyk", "Stepanovych", 31, true);
+        Student seven = new Student("Tatyana", "Bigun", "Oleksandrovna", 26, false);
+        Student eight = new Student("Anastasia", "Isachenko", "Valentinovna", 25, false);
+        Student nine = new Student("Viacheslav", "Zhyzhula", "Olegovych", 14, true);
+        Student ten = new Student("Kamila", "Tanchyk", "Kostiantynovna", 21, false);
+        
+        Student eleven = new Student("Misha", "Bogatyriov", "Ivanovych", 30, true);
+        Student twelve = new Student("Oksana", "Fedorinenko", "Bogdanovna", 30, false);
+        
+        Group a = new Group();
+        
+        a.setStudent(one, 0);
+        a.setStudent(two, 1);
+        a.setStudent(three, 2);
+        a.setStudent(four, 3);
+        a.setStudent(five, 4);
+        a.setStudent(six, 5);
+        a.setStudent(seven, 6);
+        a.setStudent(eight, 7);
+        a.setStudent(nine, 8);
+        a.setStudent(ten, 9);
+//        a.setStudent(eleven, 10);
+//        a.setStudent(twelve, 9);
+        System.out.println("-------------");
+        System.out.println(a);
+        System.out.println("-------------");
+        
+        System.out.println(a.foundStudent(9));
+        System.out.println("-------------");
+
+        a.getVon();
+        a.deleteStudent(5);
+//        a.deleteStudent(0);
+//        a.deleteStudent(2);
+//        a.deleteStudent(2);
+//        System.out.println(a);
+        
+        System.out.println("-------------");
+        a.sortStudentsByParametrs();
+        
+        System.out.println("-------------");
+        a.setStudentOne(5);
+        
+        System.out.println("-------------");
+        a.getVon();
+    }
+    
+}
+public class NotCorrectParametrException extends Exception {
+    
+    @Override
+    public String getMessage() {
+        return "Вы ввели не корректный параметр сортировки!";
+    }
+    
+}
+public class Student extends Human {
+
+    public Student(String name, String surname, String surnameTwo, int age, boolean sex) {
+        super(name, surname, surnameTwo, age, sex);
+    }
+    
+    public Student() {
+        super();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSex(boolean sex) {
+        super.setSex(sex); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isSex() {
+        return super.isSex(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setAge(int age) {
+        super.setAge(age); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getAge() {
+        return super.getAge(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSurnameTwo(String surnameTwo) {
+        super.setSurnameTwo(surnameTwo); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSurnameTwo() {
+        return super.getSurnameTwo(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSurname(String surname) {
+        super.setSurname(surname); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSurname() {
+        return super.getSurname(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getName() {
+        return super.getName(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+}
+public interface Voenkomat {
+    
+    public Student[] getVon();    
+
+}
